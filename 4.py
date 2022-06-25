@@ -1,22 +1,16 @@
-from itertools import permutations
-
-
-def gen_bananas(find_in, find_str):
-    hyphens = len(find_in) - len(find_str)
-    for perm in permutations(range(len(find_in)), hyphens):
-        temp_list = [i for i in find_in]
-        for pe in perm:
-            temp_list[pe] = '-'
-        yield temp_list
+from itertools import combinations
 
 
 def bananas(s) -> set:
     result = set()
-    # Your code here!
-    for candidat in gen_bananas(s, 'banana'):
-        if (candidat.count('b'), candidat.count('a'), candidat.count('n')) == (1, 3, 2):
-            if [char for char in candidat if char != '-'] == [letter for letter in 'banana']:
-                result.add(''.join(candidat))
+    hyphens = len(s) - len('banana')
+    for perm in combinations(range(len(s)), hyphens):
+        temp_list = list(s)
+        for pe in perm:
+            temp_list[pe] = '-'
+        if 'b' in temp_list:
+            if [char for char in temp_list if char != '-'] == list('banana'):
+                result.add(''.join(temp_list))
     return result
 
 
