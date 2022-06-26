@@ -2,48 +2,46 @@ from functools import reduce
 from math import sqrt
 from operator import mul
 
+set_of_primes = {2}
+
 
 def is_prime(num):
     if num <= 1:
         return False
     i = 2
-    while i <= sqrt(num):
-        if num%i == 0:
+    sqrt_num = sqrt(num)
+    while i <= sqrt_num:
+        if num % i == 0:
             return False
         i += 1
     return True
 
-def primes(numb, primesl):
-    i = 2
-    while i <= (1 + (numb/2)):
-        if numb % i == 0:
-            if is_prime(i):
-                if i not in primesl:
-                    return False
-        i += 1
-    return True
+
+def primes(number, input_list_of_primes):
+    _set_of_primes_divisors = set()
+    for element in set_of_primes:
+        if number % element == 0:
+            if element not in input_list_of_primes:
+                return False
+            else:
+                _set_of_primes_divisors.add(element)
+    return _set_of_primes_divisors == set(input_list_of_primes)
 
 
-def count_find_num(primesl, lim):
-    minimum = reduce(mul, primesl)
-    _set = set()
-    for i in range(minimum, lim + 1, minimum):
-        if sum(1 for prime in primesl if not i % prime) == len(primesl):
-            if primes(i, primesl):
-                _set.add(i)
-    return [len(_set), max(_set)] if _set else []
+def count_find_num(input_list_of_primes, up_limit):
+    divisors_set_result = set()
+    minimum_divisor = reduce(mul, input_list_of_primes)
+    if (sqrt(up_limit) + 100) > max(set_of_primes):
+        for n in range(int(sqrt(up_limit) + 100), max(set_of_primes), -1):
+            if is_prime(n):
+                set_of_primes.add(n)
+    for i in range(minimum_divisor, up_limit + 1, minimum_divisor):
+        if primes(i, input_list_of_primes):
+            divisors_set_result.add(i)
+    return [len(divisors_set_result), max(divisors_set_result)] if divisors_set_result else []
 
 
 if __name__ == '__main__':
-    # primesL = [2, 3]
-    # limit = 200
-    # print(count_find_num(primesL, limit))
-
-    primesL = [41, 59, 89]
-    limit = 14731875
-    print(count_find_num(primesL, limit))
-    # result is [3, 12702169]
-
     primesL = [2, 3]
     limit = 200
     assert count_find_num(primesL, limit) == [13, 192]
