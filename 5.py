@@ -6,7 +6,9 @@ from operator import mul
 def count_find_num(input_list_of_primes, up_limit):
     divisors_set_result = set()
     min_prime = min(input_list_of_primes)
-    len_permutations = sum(1 for i in range(1, 100) if min_prime ** i <= up_limit) + 1
+    len_permutations = 1
+    while min_prime ** len_permutations <= up_limit:
+        len_permutations += 1
     minimum_divisor = reduce(mul, input_list_of_primes)
     input_list_of_primes.append(1)
     all_comb = combinations_with_replacement(input_list_of_primes, len_permutations)
